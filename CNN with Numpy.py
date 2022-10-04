@@ -78,7 +78,7 @@ def back_prop(Z1, A1, Z2, A2, W2, Y, X):
     return dW1, dW2, dB1, dB2
 
 def update_params(W1, b1, W2, b2, dB1, dW1, dW2, dB2, alpha):
-    W1 = W1 - alpha *dW1
+    W1 = W1 - alpha * dW1
     b1 = b1 - alpha * dB1
     W2 = W2 - alpha * dW2
     b2 = b2 - alpha * dB2

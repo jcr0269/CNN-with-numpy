@@ -14,15 +14,19 @@ np.random.shuffle(data)
 data_dev = data[0:1000].T
 Y_dev=data_dev[0]
 X_dev=data_dev[1:n]
-
+#The
 data_train = data[1000:m].T
 Y_train = data_train[0]
 X_train = data_train[1:n]
 
 def init_params():
     #This will generate random values between -0.5 and 0.5
-    W1 = np.random.rand(10, 784) - 0.5
-    b1 = np.random.randn(10 , 1) - 0.5
+    #Currently we have created a 2D array
+    #W1 ndarray:(10,784)
+    W1 = np.random.randn(10, 784) - 0.5
+    #b1 = nparray:(10,1)
+    b1 = np.random.randn(10, 1) - 0.5
+    #W2 (ndarray:(10,10)
     W2 = np.random.randn(10, 10) - 0.5
     b2 = np.random.randn(10, 1) - 0.5
     return W1, W2, b1, b2

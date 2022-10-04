@@ -38,9 +38,17 @@ def init_params():
 def ReLU(Z):
     return np.maximum(0, Z)
 
-#forward propogation
+#preserves the amount of columns and collapes all of the rows.
+#To get the probability that we want.
+def softmax(Z):
+    A = np.exp(Z) / sum(np.exp(Z))
+    return A
+
+
 def forward_prop(W1, W2, b1, b2, X):
     Z1 = W1.dot(X) + b1
     A1 = ReLU(Z1)
+    Z2 = W2.dot(A1) + b2
+    A2 = softmax(A1)
 
 W1, W2, b1, b2 = init_params()

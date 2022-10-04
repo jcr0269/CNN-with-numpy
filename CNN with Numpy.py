@@ -44,11 +44,61 @@ def softmax(Z):
     A = np.exp(Z) / sum(np.exp(Z))
     return A
 
-
 def forward_prop(W1, W2, b1, b2, X):
     Z1 = W1.dot(X) + b1
     A1 = ReLU(Z1)
     Z2 = W2.dot(A1) + b2
     A2 = softmax(A1)
 
-W1, W2, b1, b2 = init_params()
+#creates new matrix of zeros called one_hot_Y
+#Y.size is just then the size of Y, and Y.max + 1 assuming that the zeros
+# 0 - 9, by adding 1 then we get 0-10.
+#np.arange that creates an array 0 - m for traning samples, Y is the lables
+# the Y is what column it accesses for each row go to the column specified by Y and set
+#it to 1
+def one_hot(Y):
+    one_hot_Y = np.zeros(Y.size, Y.max() + 1)
+    one_hot_Y[np.arange(Y.size), Y] = 1
+    #this just transposes the one_hot_Y or flips it.
+    #each column not each row which is why we flip
+    one_hot_Y = one_hot_Y.T
+    return one_hot_Y
+
+def deriv_ReLU(Z):
+    return Z > 0
+def back_prop(Z1, A1, Z2, A2, W2, Y, X):
+    m = Y.size
+    one_hot_Y = one_hot(Y)
+    dZ2 = A2 - one_hot_Y
+    dW2 = 1 / m * dZ2.dot(A1.T)
+    dB2 = 1 / m *np.sum(dZ2)
+    dZ1 = W2.T.dot(dZ2) * deriv_ReLU(Z1)
+    dW1 = 1 / m * dZ1.dot(X.T)
+    dB1 = 1 / m * np.sum(dZ2, 2)
+    return dW1, dW2, dB1, dB2
+
+def update_params(W1, b1, W2, b2, dB1, dW1, dW2, dB2, alpha):
+    W1 = W1 - alpha *dW1
+    b1 = b1 - alpha * dB1
+    W2 = W2 - alpha * dW2
+    b2 = b2 - alpha * dB2
+    return W1, b1, b2, W2
+
+def get_predictions(A2):
+    return np.argmax(A2, 0)
+
+def get_accuracy(predictions, Y):
+    print(predictions, Y)
+    return np.sum(predictions == Y) / Y.size
+def gradiant_descent(X, Y, alpha, iterations):
+    W1, b1, b2, W2 = init_params()
+    for i in range(iterations):
+        Z1, A1, Z2, A2 = forward_prop(W1, b1, W2, b2, X)
+        dW1, db1, dW2, db2 = back_prop(Z1, A1, Z2, A2, W1, W2, X, Y)
+        W1, b1, W2, b2 = update_params(W1, b1, W2, b2, dW1, db1, dW2, db2, alpha)
+        #every 10th itiration we print iteration.
+        if i % 10 == 0:
+            print("Iteration: ", i)
+            predictions = get_predictions(A2)
+            print(get_accuracy(predictions, Y))
+    return W1, b1, W2, b2

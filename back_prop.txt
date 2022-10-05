@@ -1,0 +1,18 @@
+bulding block to a neural network introduced in 60s. This trains the network in a chain rule. So for each forward pass,
+the back prop does a backwards pass adjusting the models parameters (wieghts and biases). So for instance you will
+have an input layer, X = a^l, i = 1,2,3,4. You will then have your hidden layeras
+
+Z2 = W1x + b1
+a2 = f(Z2)
+
+Z3 = W2a2 + b2
+a3 = f(Z3)
+
+
+Math:
+    dZ2 = A2 - Y
+    dW2 = (1/)dZ2A1.transposed
+    dB2 = (1/m)sumdZ2
+    dZ1 = W2(transposed)dZ2.*g1'(Z1)
+    dW1 = (1/m)dZ1*A0(transposed A)
+    dB1 = (1/m)sum(dZ1)

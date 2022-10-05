@@ -1,0 +1,10 @@
+This is an activation function, multiplying based off of the input.
+If its negative it will zero out, if its possitive it will give the output x .
+A(x) = max(0,x)
+The range of ReLU is in the range of [0, inf], unlike tanh and sigmoid which are dense activation layers due to their
+reaction with large data, they become computationally costly. The ReLU activation allows for us to avoid this though
+by dropping some neurons.
+Down side: Because of the horizonatal line of ReLU, we can achieve a gradiant that is 0 due to the weights not adjusting
+during decent. Or the dying ReLU problem. You can create variations then of ReLU such as y = 0.01x, though
+it is still not perfect.
+

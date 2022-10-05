@@ -1,4 +1,4 @@
-#This is a test
+
 import matplotlib
 from matplotlib import pyplot as plt
 import numpy as np
@@ -43,7 +43,7 @@ def ReLU(Z):
 def softmax(Z):
     A = np.exp(Z) / sum(np.exp(Z))
     return A
-
+#read .txt of forward_prop to understand
 def forward_prop(W1, W2, b1, b2, X):
     Z1 = W1.dot(X) + b1
     A1 = ReLU(Z1)
@@ -66,12 +66,13 @@ def one_hot(Y):
 
 def deriv_ReLU(Z):
     return Z > 0
+#Read paper on back_prop to understand more.
 def back_prop(Z1, A1, Z2, A2, W2, Y, X):
     m = Y.size
     one_hot_Y = one_hot(Y)
     dZ2 = A2 - one_hot_Y
     dW2 = 1 / m * dZ2.dot(A1.T)
-    dB2 = 1 / m *np.sum(dZ2)
+    dB2 = 1 / m * np.sum(dZ2)
     dZ1 = W2.T.dot(dZ2) * deriv_ReLU(Z1)
     dW1 = 1 / m * dZ1.dot(X.T)
     dB1 = 1 / m * np.sum(dZ2, 2)
@@ -83,6 +84,7 @@ def update_params(W1, b1, W2, b2, dB1, dW1, dW2, dB2, alpha):
     W2 = W2 - alpha * dW2
     b2 = b2 - alpha * dB2
     return W1, b1, b2, W2
+
 
 def get_predictions(A2):
     return np.argmax(A2, 0)
